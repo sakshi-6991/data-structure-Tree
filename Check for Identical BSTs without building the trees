@@ -1,0 +1,45 @@
+public class IdenticalBSTs{
+  // main function
+	public static void main(String[] args){
+		int a[] = {8, 3, 6, 1, 4, 7, 11, 14, 13};
+		int b[] = {8, 3, 6, 1, 4, 7, 10, 14, 13};
+		if(isSameBST(a,b)){
+			System.out.println("The array represent the same BST");
+		}else{
+			System.out.println("The array does not represent the same BST");
+		}
+	}
+  // isSameBST is used to check the length of two arrays
+	public static boolean isSameBST(int[] a, int[] b){
+		if(a.length != b.length){
+			return false;
+		}
+		return isSameBSTUtil(a,b,0,0,Integer.MIN_VALUE,Integer.MAX_VALUE);
+	}
+  // isSameBSTUtil is used to check for two arrays build identical BST without actually building it
+	public static boolean isSameBSTUtil(int[] a, int[] b, int index1, int index2, int min, int max){
+		int i,j;
+		for(i=index1;i<a.length;i++){
+			if(a[i]>min && a[i]<max){
+				break;
+			}
+		}
+
+		for(j=index2;j<b.length;j++){
+			if(b[j]>min && b[j]<max){
+				break;
+			}
+		}
+
+		// Base Condition
+		if(i==a.length && j==b.length){
+			return true;
+		}
+    // If one array exhausted before the other or elements are not same, arrays are not identical
+		if(i==a.length || j==b.length || a[i]!=b[j]){
+			return false;
+		}
+    // Recursively checking right and left subtree
+		return isSameBSTUtil(a,b,i+1,j+1, min, a[i]) && isSameBSTUtil(a,b,i+1,j+1,a[i],max);
+	}
+}
