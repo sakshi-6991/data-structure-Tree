@@ -1,3 +1,14 @@
+/*
+Check for Identical BSTs without building the trees
+
+Given two arrays that represent a sequence of keys. Imagine we make a Binary Search Tree (BST) from each array. 
+We need to tell whether two BSTs will be identical or not without actually constructing the tree.
+
+Example:
+a[] = {2, 4, 3, 1} and b[] = {2, 1, 4, 3} will construct the same tree. 
+
+*/
+
 public class IdenticalBSTs{
   // main function
 	public static void main(String[] args){
@@ -43,3 +54,39 @@ public class IdenticalBSTs{
 		return isSameBSTUtil(a,b,i+1,j+1, min, a[i]) && isSameBSTUtil(a,b,i+1,j+1,a[i],max);
 	}
 }
+
+/*
+Time complexity - O(n^2)
+Space Complexity - O(n)
+
+
+Time Complexity :
+
+Finding Next Valid Elements:
+
+In each call to isSameBSTUtil, the function potentially scans all the remaining elements of the arrays to find the next valid element within the range [min, max].
+In the worst case, this scan takes 𝑂(𝑛) time, where 𝑛 is the number of elements in the array.
+
+Number of Recursive Calls:
+
+The function makes two recursive calls each time a valid element is found and the current elements match.
+However, not every recursive call will always lead to two further recursive calls because the range constraints will eventually limit the number of valid elements.
+Combining the Complexity:
+
+If we think of a simplified worst-case scenario where each recursive call performs a full scan of the remaining elements, the number of scans can become quadratic.
+For the first element, the scan is O(n).
+For the second level of recursion, it will scan the remaining n−1 elements, and so forth.
+This leads to a sum of operations that resembles the sum of the first 
+
+n integers: 
+𝑂(𝑛)+𝑂(𝑛−1)+𝑂(𝑛−2)+...+𝑂(1), which results in 𝑂(𝑛2).
+
+Space Complexity:
+
+Recursive Call Stack
+The depth of the recursion is proportional to the number of elements in the arrays.
+In the worst case, the recursion depth is n (where n is the number of elements), resulting in a call stack of size n.
+
+The function does not use additional data structures that grow with the input size, so the primary space consumption is due to the recursion stack.
+Therefore, the space complexity is O(n) due to the maximum depth of the recursive call stack.
+*/
