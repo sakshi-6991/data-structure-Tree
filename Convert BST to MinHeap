@@ -1,0 +1,226 @@
+/*
+Convert BST to MinHeap and MaxHeap.
+
+Heap - A heap is a special Tree based data structure in which the tree is a complete binary tree.
+
+MaxHeap - Value of root must be greatest same thing must be done for its left and right subtree also.
+
+MinHeap - Value of root must be the smallest among all its child node and the same thing must be done for its left and right sub tree also.
+
+Converting BST to MinHeap - 2 steps - 1. Inorder Traversal of the BST.
+									  2. Level order insertion into a Min Heap.
+*/
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.*;
+
+class TreeNode{
+	int data;
+	TreeNode left, right;
+	TreeNode(int data){
+		this.data=data;
+		left=right=null;
+	}
+}
+
+public class BSTToMinHeap{
+	TreeNode root;
+	ArrayList<Integer> sortedElements;
+	ArrayList<Integer> descendingOrderedElements;
+	int index;
+	BSTToMinHeap(){
+		root = null;
+		sortedElements =  new ArrayList<>();
+		index = 0;
+	}
+
+	//Function to perform inorder traversal and store the elements in sortedElements
+	public void inorderTraversal(TreeNode node){
+		//Base Condition
+		if(node==null){
+			return;
+		}
+		inorderTraversal(node.left);
+		sortedElements.add(node.data);
+		inorderTraversal(node.right);
+	}
+
+	public void convertBSTToHeap(TreeNode node){
+		//Base Condition
+		if(node==null){
+			return;
+		}
+		node.data = sortedElements.get(index++);
+		convertBSTToHeap(node.left);
+		convertBSTToHeap(node.right);
+	}
+
+
+	void convertToMin(){
+		sortedElements.clear();
+		inorderTraversal(root);
+		index=0;
+		convertBSTToHeap(root);
+	}
+
+	void convertToMax(){
+		sortedElements.clear();
+		inorderTraversal(root);
+		Collections.sort(sortedElements, Collections.reverseOrder());
+		System.out.println("sorted elements in descending order:"+sortedElements);
+		index=0;
+		convertBSTToHeap(root);
+	}
+	public void levelOrderTraversal(TreeNode node){
+		if(node == null){
+			return;
+		}
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.add(node);
+
+		while(!queue.isEmpty()){
+			TreeNode tempNode = queue.poll();
+			System.out.println(tempNode.data+" ");
+			if(tempNode.left!=null){
+				queue.add(tempNode.left);
+			}
+			if(tempNode.right!=null){
+				queue.add(tempNode.right);
+			}
+		}
+	}
+
+	public static void main(String[] args){
+		BSTToMinHeap tree = new BSTToMinHeap();
+		tree.root = new TreeNode(8);
+		tree.root.left = new TreeNode(3);
+        tree.root.right = new TreeNode(10);
+        tree.root.left.left = new TreeNode(1);
+        tree.root.left.right = new TreeNode(6);
+        tree.root.left.right.left = new TreeNode(4);
+        tree.root.left.right.right = new TreeNode(7);
+        tree.root.right.right = new TreeNode(14);
+        tree.root.right.right.left = new TreeNode(13);
+        System.out.println("Inorder Traversal of the BST:");
+        tree.inorderTraversal(tree.root);
+        System.out.println(tree.sortedElements);
+        System.out.println("Max heap");
+        tree.convertToMax();
+        System.out.println("\n Level Order Traversal of the Min Heap");
+        tree.levelOrderTraversal(tree.root);
+
+
+
+
+		BSTToMinHeap treeMin = new BSTToMinHeap();
+		treeMin.root = new TreeNode(8);
+		treeMin.root.left = new TreeNode(3);
+        treeMin.root.right = new TreeNode(10);
+        treeMin.root.left.left = new TreeNode(1);
+        treeMin.root.left.right = new TreeNode(6);
+        treeMin.root.left.right.left = new TreeNode(4);
+        treeMin.root.left.right.right = new TreeNode(7);
+        treeMin.root.right.right = new TreeNode(14);
+        treeMin.root.right.right.left = new TreeNode(13);
+        System.out.println("Min heap");
+        treeMin.convertToMin();
+        System.out.println("\n Level Order Traversal of the Max Heap");
+        treeMin.levelOrderTraversal(treeMin.root);
+	}
+
+}
+
+/*
+Time Complexity:
+Inorder Traversal (inorderTraversal):
+Traverse the BST and collect elements in sorted order.
+O(n) where 
+𝑛
+n is the number of nodes in the BST. This is because it visits each node exactly once.
+
+Convert BST to Heap (convertBSTToHeap):
+Modify the tree's nodes according to the sorted list.
+O(n) where 
+𝑛
+n is the number of nodes in the BST. This function also visits each node exactly once.
+
+Sorting (Collections.sort):
+Sort the elements in descending order for Max Heap conversion.
+O(nlogn) where 
+𝑛
+n is the number of nodes in the BST.
+
+Level Order Traversal (levelOrderTraversal):
+Traverse the tree level by level and print each node.
+O(n) where 
+𝑛
+n is the number of nodes in the BST.
+
+Min Heap Conversion:
+
+Inorder Traversal: 
+𝑂(𝑛)
+Conversion: O(n)
+Total: 
+O(n)+O(n)=O(n)
+Max Heap Conversion:
+
+Inorder Traversal: 
+O(n)
+Sorting: 
+O(nlogn)
+Conversion: 
+O(n)
+Total: 
+
+O(n)+O(nlogn)+O(n)=O(nlogn)
+
+Space Complexity:
+Inorder Traversal:
+Space Complexity: 
+
+O(n) for storing the elements in the sortedElements list.
+
+Convert BST to Heap:
+Space Complexity: 
+
+O(h) for the recursive stack depth, same as above.
+
+Sorting (Collections.sort):
+Space Complexity: 
+
+O(n) for the sorted list. The Collections.sort method can use additional space proportional to the log of the number of elements in the list for the purpose of recursion.
+
+Min Heap Conversion:
+
+Space for storing elements: 
+
+O(n)
+Space for recursive calls: 
+
+O(h)
+Total: 
+
+O(n)+O(h), which simplifies to 
+
+O(n) considering 
+h≤n.
+Max Heap Conversion:
+
+Space for storing elements: 
+
+O(n)
+Space for sorting: 
+
+O(n)
+Space for recursive calls: 
+
+O(h)
+Total: 
+
+O(n)+O(n)+O(h), which simplifies to O(n).
+
+
+*/
